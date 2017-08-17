@@ -20,6 +20,11 @@
         <activity
             android:name=".activity.YahooLoadingActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.LoveActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>
