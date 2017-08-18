@@ -33,4 +33,16 @@
         app:layout_constraintStart_toEndOf="@+id/yahoo"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/messageBubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="onClick"
+        android:text="仿QQ消息气泡"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yahoo" />
+
 </android.support.constraint.ConstraintLayout>

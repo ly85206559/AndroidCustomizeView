@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.android.customview.activity.LoveActivity;
+import com.android.customview.activity.MessageBubbleActivity;
 import com.android.customview.activity.YahooLoadingActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else if (view.getId() == R.id.love) {
             Intent intent = new Intent(this, LoveActivity.class);
+            startActivity(intent);
+        } else if (view.getId() == R.id.messageBubble) {
+            Intent intent = new Intent(this, MessageBubbleActivity.class);
             startActivity(intent);
         }
     }
