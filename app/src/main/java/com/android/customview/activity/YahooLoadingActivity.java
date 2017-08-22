@@ -25,7 +25,7 @@ public class YahooLoadingActivity extends AppCompatActivity implements Runnable 
         handler = new Handler();
         loadingView = (YahooLoadingView) findViewById(R.id.loadingView);
 
-        handler.postDelayed(this, 3000);
+        handler.postDelayed(this, 1000);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class YahooLoadingActivity extends AppCompatActivity implements Runnable 
 
     public void onClick(View view) {
         loadingView.startLoading();
-        handler.postDelayed(this, 3000);
+        handler.postDelayed(this, 1000);
     }
 
     @Override

@@ -11,8 +11,13 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
+
+import com.android.customview.utils.LinearEvaluator;
 
 /**
  * Created by Ben.li on 2017/8/17.
@@ -29,7 +34,6 @@ public class MessageBubble extends View {
     private Path bezierPath;
 
     private ValueAnimator rollBackAnimator;
-    private float slope;
 
     public MessageBubble(Context context) {
         this(context, null);
@@ -104,15 +108,33 @@ public class MessageBubble extends View {
     }
 
     private void updateView() {
-        slope = (dragPoint.y - fixPoint.y) / (dragPoint.x - fixPoint.x);
-        rollBackAnimator = ValueAnimator.ofFloat(dragPoint.x, fixPoint.x);
-        rollBackAnimator.setDuration(200);
-        rollBackAnimator.setInterpolator(new LinearInterpolator());
+        double distance = Math.sqrt(
+                (dragPoint.x - fixPoint.x) * (dragPoint.x - fixPoint.x)
+                        + (dragPoint.y - fixPoint.y) * (dragPoint.y - fixPoint.y));
+        if (Double.compare(FIX_RADIUS_MAX - distance / 15, FIX_RADIUS_MIN) < 0) {
+            dragPoint.x = mWidth / 2;
+            dragPoint.y = mHeight / 2;
+            invalidate();
+            return;
+        }
+        PointF pointA = new PointF(
+                dragPoint.x + (fixPoint.x - dragPoint.x) * 1.35f,
+                dragPoint.y + (fixPoint.y - dragPoint.y) * 1.35f
+        );
+        PointF pointB = new PointF(
+                dragPoint.x + (fixPoint.x - dragPoint.x) * 0.75f,
+                dragPoint.y + (fixPoint.y - dragPoint.y) * 0.75f
+        );
+        rollBackAnimator = ValueAnimator.ofObject(new LinearEvaluator(),
+                dragPoint, pointA, pointB, fixPoint);
+        rollBackAnimator.setDuration(250);
+        rollBackAnimator.setInterpolator(new AccelerateInterpolator());
         rollBackAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                dragPoint.x = (float) animation.getAnimatedValue();
-                dragPoint.y = dragPoint.x * slope;
+                PointF point = (PointF) animation.getAnimatedValue();
+                dragPoint.x = point.x;
+                dragPoint.y = point.y;
                 invalidate();
             }
         });
